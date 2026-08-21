@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#6d5dfc" />
+<title>Sinhala Party Games</title>
+<style>
+  :root{
+    --bg:#0f1020;--panel:#17182a;--panel2:#20223a;--text:#f7f7fb;--muted:#b7b9cf;
+    --accent:#7b6cff;--accent2:#5b4bf2;--good:#35c98f;--warn:#ffb84d;--danger:#ff6b7a;
+    --border:rgba(255,255,255,.1);--shadow:0 16px 42px rgba(0,0,0,.25)
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  button{font:inherit}
+  .app{max-width:980px;margin:0 auto;padding:20px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .brand{font-size:22px;font-weight:800}
+  .sub{color:var(--muted);font-size:14px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:14px}
+  .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:720px){.grid.two,.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.app{padding:14px}.brand{font-size:20px}}
+  @media(max-width:480px){.grid.two,.grid.four{grid-template-columns:1fr}}
+  .menu-card{min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+  .menu-card h2{margin:0 0 8px;font-size:24px}
+  .emoji{font-size:42px}
+  .btn{width:100%;border:none;border-radius:18px;padding:16px 18px;font-weight:750;cursor:pointer;min-height:56px;touch-action:manipulation}
+  .btn.primary{background:var(--accent);color:white}
+  .btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+  .btn.good{background:var(--good);color:#081712}
+  .btn.warn{background:var(--warn);color:#271500}
+  .btn.danger{background:var(--danger);color:#25070b}
+  .btn:disabled{opacity:.45}
+  .row{display:flex;gap:10px;flex-wrap:wrap}.row>.btn{flex:1;min-width:170px}
+  .screen{display:none}.screen.active{display:block}
+  .score{background:var(--panel2);border:1px solid var(--border);border-radius:18px;padding:14px;text-align:center}
+  .score .label{color:var(--muted);font-size:13px}.score .value{font-size:30px;font-weight:850;margin-top:2px}
+  .wordbox{min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;border-radius:24px;background:linear-gradient(180deg,rgba(123,108,255,.18),rgba(123,108,255,.08));border:1px solid rgba(123,108,255,.26);margin:14px 0}
+  .word{font-size:clamp(28px,5vw,50px);font-weight:850;line-height:1.22;word-break:break-word}
+  .hint{color:var(--muted);text-align:center;font-size:14px}
+  .status{text-align:center;color:var(--muted);min-height:24px;margin-top:10px}
+  .section-title{font-size:18px;font-weight:800;margin:0 0 10px}
+  .pill{display:inline-flex;padding:8px 12px;border-radius:999px;background:rgba(123,108,255,.17);color:#d9d4ff;font-size:13px;font-weight:750}
+  .rules{color:#dddff0;font-size:15px;line-height:1.55}.rules ul{margin:8px 0 0;padding-left:20px}
+  .back{background:transparent;color:var(--text);border:1px solid var(--border);border-radius:14px;padding:10px 14px;font-weight:700}
+  .moonbox{border:1px solid rgba(255,184,77,.35);background:rgba(255,184,77,.08)}
+  .timer{font-size:60px;font-weight:900;text-align:center;letter-spacing:1px}
+  .timer.low{color:var(--danger)}
+  .spacer{height:14px}
+  .footer{color:var(--muted);font-size:12px;text-align:center;margin:24px 0 6px}
+  .install{background:rgba(53,201,143,.08);border:1px solid rgba(53,201,143,.25)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div>
+      <div class="brand">🎉 Sinhala Party Games</div>
+      <div class="sub">Made for iPad, works offline</div>
+    </div>
+  </div>
+
+  <section id="home" class="screen active">
+    <div class="grid two">
+      <div class="card menu-card">
+        <div>
+          <div class="emoji">🔐🌙</div>
+          <h2>Password</h2>
+          <div class="sub">Sinhala Password with Shoot the Moon</div>
+        </div>
+        <button class="btn primary" id="openPassword">Play Password</button>
+      </div>
+      <div class="card menu-card">
+        <div>
+          <div class="emoji">🎨😂</div>
+          <h2>Pictionary</h2>
+          <div class="sub">Funny Sinhala timed drawing game</div>
+        </div>
+        <button class="btn primary" id="openDrawing">Play Pictionary</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card install">
+      <div class="section-title">📱 Best on iPad</div>
+      <div class="rules">Open this file in Safari. For a more app-like experience, tap <b>Share</b> → <b>Add to Home Screen</b>. The game itself does not need internet.</div>
+    </div>
+  </section>
+
+  <section id="password" class="screen">
+    <div class="topbar">
+      <button class="back" data-home>← Home</button>
+      <div class="pill">Password + Shoot the Moon</div>
+    </div>
+
+    <div class="grid four">
+      <div class="score"><div class="label">Team A</div><div class="value" id="pScoreA">0</div></div>
+      <div class="score"><div class="label">Team B</div><div class="value" id="pScoreB">0</div></div>
+      <div class="score"><div class="label">Round</div><div class="value" id="pRound">1</div></div>
+      <div class="score"><div class="label">Clue</div><div class="value" id="pClue">1</div></div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="hint">Only the clue-giver should look 👀</div>
+      <div class="wordbox"><div class="word" id="pWord">🙈 Password hidden</div></div>
+      <div class="row">
+        <button class="btn primary" id="pReveal">Reveal Password</button>
+        <button class="btn secondary" id="pHide">Hide</button>
+        <button class="btn secondary" id="pNextClue">Next Clue</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card moonbox">
+      <div class="section-title">🌙 Shoot the Moon <span class="pill">8 points</span></div>
+      <div class="sub" style="margin-bottom:12px">Use before clue 1. One clue, one guess.</div>
+      <div class="row">
+        <button class="btn warn" id="moonA">Team A: Shoot the Moon</button>
+        <button class="btn warn" id="moonB">Team B: Shoot the Moon</button>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn secondary" id="moonMiss">Moon guess wrong → other team steals</button>
+      <div class="status" id="moonStatus">Team A 🌙 available · Team B 🌙 available</div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="grid two">
+      <div class="card">
+        <div class="section-title">Who guessed it?</div>
+        <div class="sub" id="pPointValue">Current value: 6 points</div>
+        <div class="spacer"></div>
+        <div class="row">
+          <button class="btn good" id="pGuessA">✅ Team A</button>
+          <button class="btn good" id="pGuessB">✅ Team B</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Round controls</div>
+        <div class="row">
+          <button class="btn primary" id="pNextWord">Next Password</button>
+          <button class="btn secondary" id="pSkip">Skip</button>
+          <button class="btn danger" id="pReset">Reset Game</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="section-title">Rules</div>
+      <div class="rules"><ul>
+        <li>Give only <b>one word</b> as the clue.</li>
+        <li>No gestures, spelling, rhymes, or saying part of the password.</li>
+        <li>The guesser gets one guess per clue, then the other team takes a turn.</li>
+        <li>Normal scoring: 6, 5, 4, 3, 2, then 1 point.</li>
+        <li>Shoot the Moon: before clue 1, one clue + one guess for 8 points. If wrong, the other team gets one 8-point steal attempt.</li>
+      </ul></div>
+    </div>
+    <div class="status" id="pStatus">Ready to play 🔐🌙</div>
+  </section>
+
+  <section id="drawing" class="screen">
+    <div class="topbar">
+      <button class="back" data-home>← Home</button>
+      <div class="pill">Funny Sinhala Pictionary</div>
+    </div>
+
+    <div class="grid four">
+      <div class="score"><div class="label">Team A</div><div class="value" id="dScoreA">0</div></div>
+      <div class="score"><div class="label">Team B</div><div class="value" id="dScoreB">0</div></div>
+      <div class="score"><div class="label">Round</div><div class="value" id="dRound">1</div></div>
+      <div class="score"><div class="label">Time</div><div class="value" id="dTimeSmall">60</div></div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="hint">Only the person drawing should look 👀</div>
+      <div class="wordbox"><div class="word" id="dWord">🙈 Word hidden</div></div>
+      <div class="timer" id="dTimer">60</div>
+      <div class="row">
+        <button class="btn primary" id="dReveal">Reveal Prompt</button>
+        <button class="btn secondary" id="dHide">Hide</button>
+        <button class="btn good" id="dStart">Start 60s</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="grid two">
+      <div class="card">
+        <div class="section-title">Scoring</div>
+        <div class="row">
+          <button class="btn good" id="dPointA">+1 Team A</button>
+          <button class="btn good" id="dPointB">+1 Team B</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Round controls</div>
+        <div class="row">
+          <button class="btn primary" id="dNext">Next Prompt</button>
+          <button class="btn secondary" id="dResetTimer">Reset Timer</button>
+          <button class="btn danger" id="dReset">Reset Game</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="section-title">Rules</div>
+      <div class="rules"><ul>
+        <li>60 seconds per drawing.</li>
+        <li>No speaking, sounds, acting, letters, words, or numbers.</li>
+        <li>Your team can shout unlimited guesses before time runs out.</li>
+        <li>Correct guess = 1 point.</li>
+        <li>Rotate the artist every round.</li>
+      </ul></div>
+    </div>
+    <div class="status" id="dStatus">Ready to play 🎨</div>
+  </section>
+
+  <div class="footer">Sinhala Party Games • Offline single-file edition</div>
+</div>
+<script>
+(() => {
+  const screens = ['home','password','drawing'];
+  const show = id => { screens.forEach(s => document.getElementById(s).classList.toggle('active', s===id)); window.scrollTo({top:0,behavior:'smooth'}); };
+  document.getElementById('openPassword').addEventListener('click',()=>show('password'));
+  document.getElementById('openDrawing').addEventListener('click',()=>show('drawing'));
+  document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>show('home')));
+
+  // PASSWORD
+  const pWords = [
+    'කෙසෙල්','මදුරුවා','වැසිකිළිය','හාදුව','මනමාලයා','මනමාලිය','බොස්','පඩිය','නින්ද','ගොරවනවා',
+    'කැරපොත්තා','මිරිස්','කේක්','සෙල්ෆිය','බීමත්','හොරෙක්','කුඩය','කලිසම','සබන්','කොට්ටය',
+    'බල්ලා','වඳුරා','අලියා','සර්පයා','කුකුළා','පොල්','අඹ','අච්චාරු','කොත්තු','බිරියානි',
+    'තේ','කෝපි','අයිස්ක්‍රීම්','චොකලට්','පීසා','වෙඩින්','දික්කසාදය','ආදරය','පෙම්වතා','පෙම්වතිය',
+    'නැන්දම්මා','අම්මා','තාත්තා','ළමයා','දොස්තර','ඉන්ජෙක්ෂන්','පොලිසිය','හිරගෙදර','පාසල','ගුරුවරයා',
+    'විභාගය','හෝම්වර්ක්','නිවාඩුව','ගුවන්යානය','හෝටලය','මුහුද','වැස්ස','හිම','සඳ','හිරු',
+    'ටොයිලට් පේපර්','දත් බුරුසුව','ලිප්ස්ටික්','සුවඳ විලවුන්','සපත්තුව','බ්‍රා','යට ඇඳුම','තුවාය','නානවා','දත් මදිනවා',
+    'ටින්ඩර්','වයිෆයි','ටික්ටොක්','ෆේස්බුක්','යූටියුබ්','ෆෝන් එක','චාජර්','බැටරිය','රිමෝට් එක','ටීවී',
+    'කාර් එක','බස් එක','ට්‍රැෆික්','පෙට්‍රල්','කැමරාව','ගිටාරය','සිංදුව','නැටුම','කැරොකේ','හීනය',
+    'බය','තරහ','ඊර්ෂ්‍යාව','ලැජ්ජාව','බඩගින්න','පිපාසය','සතුට','අඬනවා','හිනා වෙනවා','අමතක වීම',
+    'කට්ටිය','පාටිය','බෝතලය','කොක්ටේල්','වෙරි','උදේ','රෑ','හොරෙන්','චුට්ටක්','ගඳ','සෙරෙප්පුව','කණ්නාඩිය','රැවුල','කොණ්ඩය','බඩ','දත','දිව','නාසය','කන','ඇහැ'
+  ];
+  let pRemaining=[...pWords], pWord='', pA=0,pB=0,pRound=1,pClue=1,moonUsedA=false,moonUsedB=false,moonTeam=null,moonSteal=null;
+  const $=id=>document.getElementById(id);
+  const pPoints=()=>Math.max(1,7-pClue);
+  function pUI(){
+    $('pScoreA').textContent=pA;$('pScoreB').textContent=pB;$('pRound').textContent=pRound;$('pClue').textContent=pClue;
+    const v=(moonTeam||moonSteal)?8:pPoints(); $('pPointValue').textContent=`Current value: ${v} point${v===1?'':'s'}`;
+    $('moonA').disabled=moonUsedA||pClue!==1||!!moonTeam||!!moonSteal;
+    $('moonB').disabled=moonUsedB||pClue!==1||!!moonTeam||!!moonSteal;
+    let s=`Team A 🌙 ${moonUsedA?'used':'available'} · Team B 🌙 ${moonUsedB?'used':'available'}`;
+    if(moonTeam)s+=` · Team ${moonTeam} is shooting the moon!`;
+    if(moonSteal)s+=` · Team ${moonSteal} has the steal!`;
+    $('moonStatus').textContent=s;
+  }
+  function pHide(){$('pWord').textContent='🙈 Password hidden';}
+  function pPick(){if(!pRemaining.length)pRemaining=[...pWords];pWord=pRemaining.splice(Math.floor(Math.random()*pRemaining.length),1)[0];pClue=1;moonTeam=null;moonSteal=null;pHide();pUI();$('pStatus').textContent='New password ready 👀';}
+  $('pReveal').addEventListener('click',()=>{$('pWord').textContent=pWord;$('pStatus').textContent=moonTeam?`Team ${moonTeam}: ONE clue, ONE guess, 8 points! 🌙`:moonSteal?`Team ${moonSteal}: one clue and one guess to steal 8 points!`:'Remember it, hide the screen, and give one-word clue.';});
+  $('pHide').addEventListener('click',pHide);
+  $('pNextClue').addEventListener('click',()=>{if(moonTeam||moonSteal){$('pStatus').textContent='Finish the Moon attempt first.';return;}pClue++;pHide();pUI();$('pStatus').textContent=`Clue ${pClue}. Other team’s turn.`;});
+  function activateMoon(t){if(pClue!==1||moonTeam||moonSteal)return;if(t==='A'&&moonUsedA||t==='B'&&moonUsedB)return;if(t==='A')moonUsedA=true;else moonUsedB=true;moonTeam=t;pUI();$('pStatus').textContent=`🌙 Team ${t} is SHOOTING THE MOON!`;}
+  $('moonA').addEventListener('click',()=>activateMoon('A'));$('moonB').addEventListener('click',()=>activateMoon('B'));
+  $('moonMiss').addEventListener('click',()=>{if(!moonTeam){$('pStatus').textContent='Activate Shoot the Moon first.';return;}moonSteal=moonTeam==='A'?'B':'A';const old=moonTeam;moonTeam=null;pHide();pUI();$('pStatus').textContent=`Team ${old} missed. Team ${moonSteal} gets one 8-point steal attempt!`;});
+  function award(t){let pts;if(moonTeam){if(t!==moonTeam){$('pStatus').textContent='Press Moon miss if the Moon team guessed wrong.';return;}pts=8;moonTeam=null;}else if(moonSteal){if(t!==moonSteal){$('pStatus').textContent=`Only Team ${moonSteal} can steal.`;return;}pts=8;moonSteal=null;}else pts=pPoints();if(t==='A')pA+=pts;else pB+=pts;pUI();$('pStatus').textContent=`Team ${t} gets ${pts} point${pts===1?'':'s'} 🎉`;}
+  $('pGuessA').addEventListener('click',()=>award('A'));$('pGuessB').addEventListener('click',()=>award('B'));
+  $('pNextWord').addEventListener('click',()=>{pRound++;pPick();});$('pSkip').addEventListener('click',()=>{pRound++;pPick();$('pStatus').textContent='Skipped. New password ready.';});
+  $('pReset').addEventListener('click',()=>{pRemaining=[...pWords];pA=pB=0;pRound=1;pClue=1;moonUsedA=moonUsedB=false;moonTeam=moonSteal=null;pPick();$('pStatus').textContent='New game. Both Moon attempts available 🌙';});
+  pPick();
+
+  // DRAWING
+  const dWords=[
+    'කෙසෙල් ලෙල්ලකින් ලිස්සන කෙනෙක්','මදුරුවෙක් මරන්න ගිහින් තමන්ටම ගහගන්නවා','බොස් එනකොට එකපාරට වැඩ කරනවා වගේ ඉන්නවා','ෆෝන් එක වැසිකිළියට වැටෙනවා','කේක් එක හොරෙන් කන කෙනෙක්','වැස්සේ කුඩය අනිත් පැත්තට හැරෙනවා','කැරපොත්තෙක් දැකලා පුටුවට නගිනවා','ඉතා උණු තේ බීලා කට පිච්චෙනවා','බස් එක පස්සේ සෙරෙප්පු දාගෙන දුවනවා','ගොරවලා අනිත් අයව ඇහැරවන කෙනෙක්','සෙල්ෆියක් ගන්න ගිහින් වැටෙනවා','කෑම කන ගමන් නිදාගන්නවා','කලිසම ඉරිලාත් දන්නේ නැති කෙනෙක්','මිරිස් කාලා වතුර හොයන කෙනෙක්','නානකොට වතුර එකපාරට නවතිනවා','අම්මාගෙන් බැනුම් අහන වැඩිහිටියෙක්','බල්ලාගෙන් බේරෙන්න ගහකට නගිනවා','දත් මදින්න ගිහින් toothpaste වැඩියෙන් ගිලිනවා','වෙඩින් එකේ කේක් හොරෙන් කන කෙනෙක්','නටන්න බැරි කෙනෙක් ලොකු show එකක් දානවා','karaoke කරලා හැමෝවම බය කරනවා','ලිෆ්ට් එකේ හිරවෙලා panic වෙනවා','බඩගිනි වෙලා fridge එක දහපාරක් අරිනවා','හොරෙක් ජනේලෙන් පැනලා සපත්තුව අමතක කරනවා','කුකුළෙක් පස්සේ දුවන කෙනෙක්','පොල් ගෙඩියක් ඔලුවට වැටෙනවා','වෙඩින් එකට පරක්කු වෙච්ච මනමාලයා','ඇඳෙන් වැටෙන අතරේ කොට්ටය බදාගෙන ඉන්නවා','ටොයිලට් පේපර් ඉවර වෙලා උදව් ඉල්ලනවා','ෆෝන් බැටරිය 1% වෙලා charger හොයනවා','මකුළුවෙක් දැකලා කාමරයෙන් පැනලා දුවනවා','කේක් එකට මුහුණ වැටෙනවා','වැරදි සපත්තු දෙකක් දාගෙන ගෙදරින් එළියට යනවා','නින්දෙන් ඇවිදින කෙනෙක් fridge එක අරිනවා','ලොකු මිනිහෙක් පොඩි පුටුවක ඉඳගන්නවා','කෑම හදනකොට kitchen එකට දුම් පිරෙනවා','වැරදි කෙනාට හාදුවක් දෙන්න යනවා','injection එක දැකලා දොස්තරගෙන් පැනලා දුවනවා','සබන් ලිස්සලා නාන කාමරේ වැටෙන්න යනවා','මදුරුවෙක් නිසා මුළු රෑම නිදාගන්න බැරි කෙනෙක්','ගෙදර දොර lock කරලා key එක ඇතුළේ තියලා යනවා','කෑම plate එකක් අතින් වැටෙන්න යනවා','TV remote එක හොයලා අන්තිමට තමන් උඩින් හම්බෙනවා','කන්නාඩිය ඉස්සරහ dance practice කරනවා','හොරෙන් chocolate කාලා evidence මූණේ තියෙනවා','පිහිනන්න බැරි කෙනෙක් pool එකේ hero වෙන්න යනවා','බල්ලෙක් එක්ක selfie ගන්න ගිහින් බල්ලා පැනලා යනවා','වතුර බෝතලය අරින්න ගිහින් මූණට වතුර යනවා','shopping bag එක පතුලෙන් කැඩිලා බඩු හැමතැනම වැටෙනවා','alarm එක පහපාරක් snooze කරන කෙනෙක්'
+  ];
+  let dRemaining=[...dWords],dWord='',dA=0,dB=0,dRound=1,dTime=60,dInt=null;
+  function dUI(){$('dScoreA').textContent=dA;$('dScoreB').textContent=dB;$('dRound').textContent=dRound;$('dTimeSmall').textContent=dTime;$('dTimer').textContent=dTime;$('dTimer').classList.toggle('low',dTime<=10);}
+  function dHide(){$('dWord').textContent='🙈 Word hidden';}
+  function dStop(){if(dInt){clearInterval(dInt);dInt=null;}}
+  function dPick(){if(!dRemaining.length)dRemaining=[...dWords];dWord=dRemaining.splice(Math.floor(Math.random()*dRemaining.length),1)[0];dStop();dTime=60;dHide();dUI();$('dStatus').textContent='New prompt ready 👀';}
+  $('dReveal').addEventListener('click',()=>{$('dWord').textContent=dWord;$('dStatus').textContent='Remember it, hide the screen, then start the timer.';});
+  $('dHide').addEventListener('click',dHide);
+  $('dStart').addEventListener('click',()=>{dStop();if(dTime<=0)dTime=60;dInt=setInterval(()=>{dTime--;dUI();if(dTime<=0){dStop();$('dStatus').textContent='⏰ Time is up!';}},1000);$('dStatus').textContent='Draw! 🎨';});
+  $('dPointA').addEventListener('click',()=>{dA++;dUI();$('dStatus').textContent='Team A gets 1 point 🎉';});
+  $('dPointB').addEventListener('click',()=>{dB++;dUI();$('dStatus').textContent='Team B gets 1 point 🎉';});
+  $('dNext').addEventListener('click',()=>{dRound++;dPick();});
+  $('dResetTimer').addEventListener('click',()=>{dStop();dTime=60;dUI();$('dStatus').textContent='Timer reset.';});
+  $('dReset').addEventListener('click',()=>{dStop();dRemaining=[...dWords];dA=dB=0;dRound=1;dTime=60;dPick();$('dStatus').textContent='New Pictionary game ready 🎨';});
+  dPick();
+})();
+</script>
+</body>
+</html>
